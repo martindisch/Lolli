@@ -3,6 +3,7 @@ package com.martin.lolli;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 public class RecyclerFragment extends Fragment {
 
@@ -63,33 +65,23 @@ public class RecyclerFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
-                mAdapter.add("Hello", 3);
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                View ttDialog = ttinflater.inflate(R.layout.ttdialog);
-                final Spinner ttsYear = (Spinner) ttDialog.findViewById(R.id.ttsYear);
-                final EditText ttetClass = (EditText) ttDialog.findViewById(R.id.ttetClass);
-                SharedPreferences sp = getApplicationContext().getSharedPreferences("Kantidroid", Context.MODE_PRIVATE);
-                ttsYear.setSelection(sp.getInt("yearindex", 0));
-                ttetClass.setText(sp.getString("class", ""));
-                AlertDialog.Builder ttdg = new AlertDialog.Builder(this);
-                ttdg.setTitle("Stundenplan");
-                ttdg.setView(ttDialog);
-                ttdg.setNegativeButton("Abbrechen", null);
-                ttdg.setPositiveButton("Ansehen", new DialogInterface.OnClickListener() {
+                View dialog = inflater.inflate(R.layout.dialog_add, null);
+                final EditText name = (EditText) dialog.findViewById(R.id.etName);
+                final EditText position = (EditText) dialog.findViewById(R.id.etPosition);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Add Element");
+                builder.setView(dialog);
+                builder.setNegativeButton("Cancel", null);
+                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        mAdapter.add(name.getText().toString(), Integer.parseInt(position.getText().toString()));
                     }
 
                 });
-                ttdg.show();
-                break;
-            case R.id.remove:
-                mAdapter.remove(3);
-                break;
-            case R.id.edit:
-                mAdapter.edit("Nooo", 3);
+                builder.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
