@@ -16,4 +16,21 @@
     <string name="hell_yeah">Hell Yeah</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string-array name="names">
+        <item>Yadomi</item>
+        <item>Menma</item>
+        <item>Nagisa</item>
+        <item>Tomoya</item>
+        <item>Kyou</item>
+        <item>Ryou</item>
+        <item>Sunohara</item>
+        <item>Kotomi</item>
+        <item>Tomoya</item>
+        <item>Jinta</item>
+        <item>Anaru</item>
+        <item>Tsuruko</item>
+        <item>Poppo</item>
+        <item>Yukiatsu</item>
+    </string-array>
+
 </resources>

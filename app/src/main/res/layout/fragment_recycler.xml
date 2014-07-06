@@ -5,7 +5,7 @@
     tools:context="com.martin.lolli.RecyclerFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/tvList"
+        android:id="@+id/rvList"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
