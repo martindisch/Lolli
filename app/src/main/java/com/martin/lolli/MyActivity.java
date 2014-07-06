@@ -66,7 +66,7 @@ public class MyActivity extends Activity
                 fragmentManager.beginTransaction().replace(R.id.container, CardFragment.newInstance()).commit();
                 break;
             case 2:
-
+                fragmentManager.beginTransaction().replace(R.id.container, RecyclerFragment.newInstance()).commit();
                 break;
         }
     }
