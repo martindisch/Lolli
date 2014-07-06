@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MyActivity" >
+    <item android:id="@+id/action_example"
+        android:title="Add"
+        android:icon="@android:drawable/ic_menu_add"
+        android:showAsAction="withText|ifRoom" />
+    <item
+        android:id="@+id/action_share"
+        android:title="Share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:showAsAction="withText|ifRoom"/>
+    <item
+        android:title="Nothing"
+        android:orderInCategory="200"
+        android:showAsAction="never" />
+    <item
+        android:title="to"
+        android:orderInCategory="200"
+        android:showAsAction="never" />
+    <item
+        android:title="see"
+        android:orderInCategory="200"
+        android:showAsAction="never" />
+    <item
+        android:title="here"
+        android:orderInCategory="200"
+        android:showAsAction="never" />
+
+    <item
+        android:id="@+id/switch_theme"
+        android:title="Switch theme"
+        android:orderInCategory="200"
+        android:showAsAction="never" />
+</menu>
