@@ -1,32 +1,23 @@
 package com.martin.lolli;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private ArrayList<String> mNames;
     private String[] mIcons;
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mName, mIcon;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            mIcon = (TextView) itemView.findViewById(R.id.tvPic);
-            mName = (TextView) itemView.findViewById(R.id.tvName);
-        }
-    }
 
     public MyAdapter(String[] names) {
         mNames = new ArrayList<String>();
@@ -35,8 +26,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public MyAdapter.ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row, null);
+        v.setOnClickListener(new RecyclerView.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View dialog = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dialog_rename, null);
+                final EditText name = (EditText) dialog.findViewById(R.id.etName);
+                //name.setText(mNames.get(i));
+                AlertDialog.Builder builder = new AlertDialog.Builder(viewGroup.getContext());
+                builder.setTitle("Rename");
+                builder.setView(dialog);
+                builder.setNegativeButton("Cancel", null);
+                builder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //edit(name.getText().toString(), i);
+                    }
+
+                });
+                builder.show();
+            }
+        });
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -74,6 +86,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         mIcons = new String[mNames.size()];
         for (int i = 0; i < mNames.size(); i++) {
             mIcons[i] = mNames.get(i).charAt(0) + "";
+        }
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView mName, mIcon;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            mIcon = (TextView) itemView.findViewById(R.id.tvPic);
+            mName = (TextView) itemView.findViewById(R.id.tvName);
         }
     }
 }

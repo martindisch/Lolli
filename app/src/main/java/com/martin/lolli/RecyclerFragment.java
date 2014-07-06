@@ -70,7 +70,7 @@ public class RecyclerFragment extends Fragment {
                 final EditText name = (EditText) dialog.findViewById(R.id.etName);
                 final EditText position = (EditText) dialog.findViewById(R.id.etPosition);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Add Element");
+                builder.setTitle("Add");
                 builder.setView(dialog);
                 builder.setNegativeButton("Cancel", null);
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
