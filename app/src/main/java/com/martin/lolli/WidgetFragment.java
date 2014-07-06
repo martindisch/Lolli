@@ -11,13 +11,6 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WidgetFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
 public class WidgetFragment extends Fragment {
 
     private Button mButton;
