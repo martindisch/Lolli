@@ -8,43 +8,60 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.martin.lolli.WidgetFragment">
 
-    <CheckBox
-        android:id="@+id/cbAwesome"
+    <RelativeLayout
+        android:id="@+id/rlViews"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/awesomeness" />
+        android:visibility="invisible">
 
-    <RadioGroup
-        android:id="@+id/rgRadios"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cbAwesome">
-
-        <RadioButton
+        <CheckBox
+            android:id="@+id/cbAwesome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/option1" />
+            android:text="@string/awesomeness" />
 
-        <RadioButton
+        <RadioGroup
+            android:id="@+id/rgRadios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/option2" />
-    </RadioGroup>
+            android:layout_below="@id/cbAwesome">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/option1" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/option2" />
+        </RadioGroup>
+    </RelativeLayout>
+
 
     <Button
         android:id="@+id/bGo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rgRadios"
+        android:layout_below="@id/rlViews"
+        android:layout_marginTop="10dp"
         android:text="@string/hell_yeah" />
 
+    <Button
+        android:id="@+id/bReveal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/bGo"
+        android:layout_toRightOf="@id/bGo"
+        android:text="Hide/Reveal" />
+
     <RelativeLayout
-        android:layout_marginTop="100dp"
-        android:layout_centerHorizontal="true"
         android:id="@+id/rlCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/bGo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
         android:background="@android:color/darker_gray"
         android:padding="10dp">
 
