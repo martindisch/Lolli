@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class RecyclerFragment extends Fragment {
 
@@ -40,12 +41,20 @@ public class RecyclerFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mList.setLayoutManager(mLayoutManager);
 
         mAdapter = new MyAdapter(getResources().getStringArray(R.array.names));
         mList.setAdapter(mAdapter);
-        setHasOptionsMenu(true);
+
+        SharedPreferences sp = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        if (sp.getBoolean("firsttime", true)) {
+            Toast.makeText(getActivity(), "Long press to remove an object", Toast.LENGTH_LONG).show();
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("firsttime", false);
+            editor.commit();
+        }
     }
 
     @Override
