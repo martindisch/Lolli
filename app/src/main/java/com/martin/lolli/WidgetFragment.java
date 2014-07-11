@@ -52,53 +52,11 @@ public class WidgetFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mVisible) {
-                    // get the center for the clipping circle
-                    int cx = (mViews.getLeft() + mViews.getRight()) / 2;
-                    int cy = (mViews.getTop() + mViews.getBottom()) / 2;
+                    hide();
 
-                    // get the initial radius for the clipping circle
-                    int initialRadius = mViews.getWidth();
-
-                    // create the animation (the final radius is zero)
-                    ValueAnimator anim =
-                            ViewAnimationUtils.createCircularReveal(mViews, cx, cy, initialRadius, 0);
-
-                    // make the view invisible when the animation is done
-                    anim.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mViews.setVisibility(View.INVISIBLE);
-                        }
-                    });
-
-                    // start the animation
-                    anim.start();
-                    mVisible = false;
                 } else {
-                    // get the center for the clipping circle
-                    int cx = (mViews.getLeft() + mViews.getRight()) / 2;
-                    int cy = (mViews.getTop() + mViews.getBottom()) / 2;
+                    reveal();
 
-                    // get the final radius for the clipping circle
-                    int finalRadius = mViews.getWidth();
-
-                    // create and start the animator for this view
-                    // (the start radius is zero)
-                    ValueAnimator anim =
-                            ViewAnimationUtils.createCircularReveal(mViews, cx, cy, 0, finalRadius);
-
-                    // make the view visible when the animation starts
-                    anim.addListener(new AnimatorListenerAdapter() {
-
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-                            super.onAnimationStart(animation);
-                            mViews.setVisibility(View.VISIBLE);
-                        }
-                    });
-                    anim.start();
-                    mVisible = true;
                 }
             }
         });
@@ -140,5 +98,56 @@ public class WidgetFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    private void hide() {
+        // get the center for the clipping circle
+        int cx = mViews.getLeft();
+        int cy = mViews.getTop();
+
+        // get the initial radius for the clipping circle
+        int initialRadius = mViews.getWidth();
+
+        // create the animation (the final radius is zero)
+        ValueAnimator anim =
+                ViewAnimationUtils.createCircularReveal(mViews, cx, cy, initialRadius, 0);
+
+        // make the view invisible when the animation is done
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mViews.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // start the animation
+        anim.start();
+        mVisible = false;
+    }
+
+    private void reveal() {
+        // get the center for the clipping circle
+        int cx = mViews.getLeft();
+        int cy = mViews.getTop();
+
+        // get the final radius for the clipping circle
+        int finalRadius = mViews.getWidth();
+
+        // create and start the animator for this view
+        // (the start radius is zero)
+        ValueAnimator anim =
+                ViewAnimationUtils.createCircularReveal(mViews, cx, cy, 0, finalRadius);
+
+        // make the view visible when the animation starts
+        anim.addListener(new AnimatorListenerAdapter() {
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mViews.setVisibility(View.VISIBLE);
+            }
+        });
+        anim.start();
+        mVisible = true;
+    }
 
 }
