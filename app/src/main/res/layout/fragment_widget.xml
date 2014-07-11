@@ -39,6 +39,8 @@
         android:text="@string/hell_yeah" />
 
     <RelativeLayout
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
         android:id="@+id/rlCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,7 +51,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello, it's me again.\nLift me up!" />
+            android:text="Lift me up!" />
     </RelativeLayout>
 
 </RelativeLayout>

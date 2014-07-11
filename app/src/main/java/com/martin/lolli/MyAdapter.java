@@ -49,6 +49,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 builder.show();
             }
         });
+        v.setOnLongClickListener(new RecyclerView.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                final int position = (Integer) view.findViewById(R.id.tvName).getTag();
+                remove(position);
+                return true;
+            }
+        });
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
