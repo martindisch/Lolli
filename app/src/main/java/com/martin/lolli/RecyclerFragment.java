@@ -4,6 +4,7 @@ package com.martin.lolli;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,7 +59,7 @@ public class RecyclerFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.recycler_fragment, menu);
+        inflater.inflate(R.menu.recycler_fragment, menu);
     }
 
     @Override
@@ -82,6 +83,18 @@ public class RecyclerFragment extends Fragment {
 
                 });
                 builder.show();
+                break;
+            case R.id.theme:
+                SharedPreferences sp = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                if (sp.getInt("Theme", R.style.Orange) == R.style.Orange) {
+                    editor.putInt("Theme", R.style.Green);
+                }
+                else {
+                    editor.putInt("Theme", R.style.Orange);
+                }
+                editor.commit();
+                getActivity().recreate();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -231,43 +231,11 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /*@Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // If the drawer is open, show the global app actions in the action bar. See also
-        // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Nothing has been added", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        if (item.getItemId() == R.id.action_share) {
-            Toast.makeText(getActivity(), "You can't share. Haha!", Toast.LENGTH_SHORT).show();
-        }
-        if (item.getItemId() == R.id.switch_theme) {
-            SharedPreferences sp = getActivity().getPreferences(getActivity().MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            if (sp.getInt("Theme", R.style.Orange) == R.style.Orange) {
-                editor.putInt("Theme", R.style.Green);
-            }
-            else {
-                editor.putInt("Theme", R.style.Orange);
-            }
-            editor.commit();
-            getActivity().recreate();
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
