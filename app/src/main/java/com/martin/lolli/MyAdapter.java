@@ -4,7 +4,6 @@ package com.martin.lolli;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onClick(View view) {
                 View dialog = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dialog_rename, null);
                 final EditText name = (EditText) dialog.findViewById(R.id.etName);
-                //name.setText(mNames.get(i));
+                final int position = (Integer) view.findViewById(R.id.tvName).getTag();
+                name.setText(mNames.get(position));
                 AlertDialog.Builder builder = new AlertDialog.Builder(viewGroup.getContext());
                 builder.setTitle("Rename");
                 builder.setView(dialog);
@@ -42,7 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //edit(name.getText().toString(), i);
+                        edit(name.getText().toString(), position);
                     }
 
                 });
@@ -57,6 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, int i) {
         viewHolder.mName.setText(mNames.get(i));
         viewHolder.mIcon.setText(mIcons[i]);
+        viewHolder.mName.setTag(i);
     }
 
     @Override
