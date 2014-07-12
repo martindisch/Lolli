@@ -2,10 +2,11 @@ package com.martin.lolli;
 
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Outline;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class RecyclerFragment extends Fragment {
@@ -22,6 +24,7 @@ public class RecyclerFragment extends Fragment {
     private RecyclerView mList;
     private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ImageButton mFab;
 
     public RecyclerFragment() {
         // Required empty public constructor
@@ -54,6 +57,11 @@ public class RecyclerFragment extends Fragment {
             editor.putBoolean("firsttime", false);
             editor.commit();
         }
+
+        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+        Outline outline = new Outline();
+        outline.setOval(0, 0, size, size);
+        mFab.setOutline(outline);
     }
 
     @Override
@@ -61,6 +69,7 @@ public class RecyclerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_recycler, container, false);
         mList = (RecyclerView) v.findViewById(R.id.rvList);
+        mFab = (ImageButton) v.findViewById(R.id.fab);
         return v;
     }
 
@@ -97,8 +106,7 @@ public class RecyclerFragment extends Fragment {
                 SharedPreferences.Editor editor = sp.edit();
                 if (sp.getInt("Theme", R.style.Orange) == R.style.Orange) {
                     editor.putInt("Theme", R.style.Green);
-                }
-                else {
+                } else {
                     editor.putInt("Theme", R.style.Orange);
                 }
                 editor.commit();
