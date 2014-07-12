@@ -5,7 +5,13 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Outline;
+import android.graphics.drawable.RippleDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.Shape;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,6 +68,29 @@ public class RecyclerFragment extends Fragment {
         Outline outline = new Outline();
         outline.setOval(0, 0, size, size);
         mFab.setOutline(outline);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialog = inflater.inflate(R.layout.dialog_add, null);
+                final EditText name = (EditText) dialog.findViewById(R.id.etName);
+                final EditText position = (EditText) dialog.findViewById(R.id.etPosition);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Add");
+                builder.setView(dialog);
+                builder.setNegativeButton("Cancel", null);
+                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mAdapter.add(name.getText().toString(), Integer.parseInt(position.getText().toString()));
+                    }
+
+                });
+                builder.show();
+            }
+        });
     }
 
     @Override
@@ -82,25 +111,6 @@ public class RecyclerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add:
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View dialog = inflater.inflate(R.layout.dialog_add, null);
-                final EditText name = (EditText) dialog.findViewById(R.id.etName);
-                final EditText position = (EditText) dialog.findViewById(R.id.etPosition);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Add");
-                builder.setView(dialog);
-                builder.setNegativeButton("Cancel", null);
-                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mAdapter.add(name.getText().toString(), Integer.parseInt(position.getText().toString()));
-                    }
-
-                });
-                builder.show();
-                break;
             case R.id.theme:
                 SharedPreferences sp = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
