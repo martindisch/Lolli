@@ -3,8 +3,7 @@ package com.martin.lolli;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+
 import com.martin.lolli.R;
 
 public class DetailActivity extends Activity {
