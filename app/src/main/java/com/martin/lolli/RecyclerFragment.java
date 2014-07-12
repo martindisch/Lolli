@@ -48,7 +48,7 @@ public class RecyclerFragment extends Fragment {
         mAdapter = new MyAdapter(getResources().getStringArray(R.array.names));
         mList.setAdapter(mAdapter);
 
-        SharedPreferences sp = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
         if (sp.getBoolean("firsttime", true)) {
             Toast.makeText(getActivity(), "Long press to remove an object", Toast.LENGTH_LONG).show();
             SharedPreferences.Editor editor = sp.edit();
@@ -94,7 +94,7 @@ public class RecyclerFragment extends Fragment {
                 builder.show();
                 break;
             case R.id.theme:
-                SharedPreferences sp = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+                SharedPreferences sp = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 if (sp.getInt("Theme", R.style.Orange) == R.style.Orange) {
                     editor.putInt("Theme", R.style.Green);

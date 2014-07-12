@@ -4,7 +4,9 @@ package com.martin.lolli;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.app.ActivityOptions;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
@@ -24,8 +27,7 @@ public class WidgetFragment extends Fragment {
     private Button mButton, mVisibility;
     private boolean mVisible = false;
     private RadioGroup mGroup;
-    private FrameLayout mHero;
-    private int mElevation = 0;
+    private ImageView mHero;
     private RelativeLayout mViews;
 
     public WidgetFragment() {
@@ -45,8 +47,9 @@ public class WidgetFragment extends Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mElevation += 10;
-                mHero.setTranslationZ(mElevation);
+                Intent i = new Intent(getActivity(), DetailActivity.class);
+                ActivityOptions options =  ActivityOptions.makeSceneTransitionAnimation(getActivity(), mHero, "photo");
+                startActivity(i, options.toBundle());
             }
         });
         mVisibility.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +72,7 @@ public class WidgetFragment extends Fragment {
         mButton = (Button) rootView.findViewById(R.id.bGo);
         mVisibility = (Button) rootView.findViewById(R.id.bReveal);
         mGroup = (RadioGroup) rootView.findViewById(R.id.rgRadios);
-        mHero = (FrameLayout) rootView.findViewById(R.id.frHero);
+        mHero = (ImageView) rootView.findViewById(R.id.ivHero);
         mViews = (RelativeLayout) rootView.findViewById(R.id.rlViews);
         return rootView;
     }
@@ -84,7 +87,7 @@ public class WidgetFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.theme:
-                SharedPreferences sp = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+                SharedPreferences sp = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 if (sp.getInt("Theme", R.style.Orange) == R.style.Orange) {
                     editor.putInt("Theme", R.style.Green);
