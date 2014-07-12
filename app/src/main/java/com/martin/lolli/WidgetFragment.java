@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
@@ -23,7 +24,7 @@ public class WidgetFragment extends Fragment {
     private Button mButton, mVisibility;
     private boolean mVisible = false;
     private RadioGroup mGroup;
-    private RelativeLayout mCard;
+    private FrameLayout mHero;
     private int mElevation = 0;
     private RelativeLayout mViews;
 
@@ -45,7 +46,7 @@ public class WidgetFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mElevation += 10;
-                mCard.setTranslationZ(mElevation);
+                mHero.setTranslationZ(mElevation);
             }
         });
         mVisibility.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +57,6 @@ public class WidgetFragment extends Fragment {
 
                 } else {
                     reveal();
-
                 }
             }
         });
@@ -69,7 +69,7 @@ public class WidgetFragment extends Fragment {
         mButton = (Button) rootView.findViewById(R.id.bGo);
         mVisibility = (Button) rootView.findViewById(R.id.bReveal);
         mGroup = (RadioGroup) rootView.findViewById(R.id.rgRadios);
-        mCard = (RelativeLayout) rootView.findViewById(R.id.rlCard);
+        mHero = (FrameLayout) rootView.findViewById(R.id.frHero);
         mViews = (RelativeLayout) rootView.findViewById(R.id.rlViews);
         return rootView;
     }

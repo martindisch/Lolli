@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.martin.lolli" >
 
-    <uses-sdk android:minSdkVersion="L" android:targetSdkVersion="L" />
+    <uses-sdk
+        android:minSdkVersion="L"
+        android:targetSdkVersion="L" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +19,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".MyActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.martin.lolli.MyActivity" />
         </activity>
     </application>
 

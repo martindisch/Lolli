@@ -55,20 +55,20 @@
         android:layout_toRightOf="@id/bGo"
         android:text="Hide/Reveal" />
 
-    <RelativeLayout
-        android:id="@+id/rlCard"
+
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bGo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:background="@android:color/darker_gray"
-        android:padding="10dp">
+        android:layout_below="@id/bGo"
+        android:layout_marginTop="50dp"
+        android:id="@+id/frHero">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lift me up!" />
-    </RelativeLayout>
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/pic" />
+    </FrameLayout>
+
 
 </RelativeLayout>

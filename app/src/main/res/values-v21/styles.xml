@@ -3,6 +3,14 @@
     <style name="AppTheme" parent="android:Theme.Material.Light">
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
+        <!-- Flag indicating whether this Window's transition should overlap with
+             the exiting transition of the calling Activity. -->
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+
+        <!--Flag indicating whether this Window's transition should overlap with
+             the exiting transition of the called Activity when the called Activity
+             finishes. -->
+        <item name="android:windowAllowExitTransitionOverlap">true</item>
     </style>
 
     <style name="Orange" parent="AppTheme">
