@@ -7,4 +7,9 @@
         android:title="Switch theme"
         android:showAsAction="never"/>
 
+    <item
+        android:id="@+id/firstTime"
+        android:title="Set first time"
+        android:showAsAction="never"/>
+
 </menu>

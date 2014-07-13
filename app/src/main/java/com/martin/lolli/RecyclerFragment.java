@@ -10,8 +10,10 @@ import android.content.SharedPreferences;
 import android.graphics.Outline;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,13 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class RecyclerFragment extends Fragment {
 
@@ -61,14 +60,6 @@ public class RecyclerFragment extends Fragment {
         mAdapter = new MyAdapter(getResources().getStringArray(R.array.names));
         mList.setAdapter(mAdapter);
 
-        SharedPreferences sp = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
-        if (sp.getBoolean("firsttime", true)) {
-            Toast.makeText(getActivity(), "Long press to remove an object", Toast.LENGTH_LONG).show();
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putBoolean("firsttime", false);
-            editor.commit();
-        }
-
         int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
         Outline outline = new Outline();
         outline.setOval(0, 0, size, size);
@@ -77,7 +68,7 @@ public class RecyclerFragment extends Fragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*LayoutInflater inflater = getActivity().getLayoutInflater();
+                LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialog = inflater.inflate(R.layout.dialog_add, null);
                 final EditText name = (EditText) dialog.findViewById(R.id.etName);
                 final EditText position = (EditText) dialog.findViewById(R.id.etPosition);
@@ -93,8 +84,7 @@ public class RecyclerFragment extends Fragment {
                     }
 
                 });
-                builder.show();*/
-                showSnackbar();
+                builder.show();
             }
         });
         mSnackButton.setOnClickListener(new View.OnClickListener() {
@@ -108,10 +98,24 @@ public class RecyclerFragment extends Fragment {
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics());
         mSnackbar.setY(mSnackbar.getY() + px);
         mSnackbar.setVisibility(mSnackbar.VISIBLE);
+
+        SharedPreferences sp = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
+        if (sp.getBoolean("firsttime", true)) {
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showSnackbar();
+                }
+            }, 1000);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("firsttime", false);
+            editor.commit();
+        }
     }
 
     private void showSnackbar() {
-        float px = - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics());
+        float px = -TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics());
         moveSnackbar(px);
     }
 
@@ -126,13 +130,13 @@ public class RecyclerFragment extends Fragment {
         ObjectAnimator sbAnimator;
         p.moveTo(mFab.getX(), mFab.getY());
         p.rLineTo(0, px);
-        sbAnimator  = ObjectAnimator.ofFloat(mFab, View.X, View.Y, p);
+        sbAnimator = ObjectAnimator.ofFloat(mFab, View.X, View.Y, p);
 
         ObjectAnimator fabAnimator;
         p.reset();
         p.moveTo(mSnackbar.getX(), mSnackbar.getY());
         p.rLineTo(0, px);
-        fabAnimator  = ObjectAnimator.ofFloat(mSnackbar, View.X, View.Y, p);
+        fabAnimator = ObjectAnimator.ofFloat(mSnackbar, View.X, View.Y, p);
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(fabAnimator, sbAnimator);
@@ -171,6 +175,12 @@ public class RecyclerFragment extends Fragment {
                 }
                 editor.commit();
                 getActivity().recreate();
+                break;
+            case R.id.firstTime:
+                SharedPreferences sps = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
+                SharedPreferences.Editor editors = sps.edit();
+                editors.putBoolean("firsttime", true);
+                editors.commit();
                 break;
         }
         return super.onOptionsItemSelected(item);
