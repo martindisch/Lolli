@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.martin.lolli.R;
-
 public class DetailActivity extends Activity {
 
     @Override

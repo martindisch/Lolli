@@ -1,7 +1,6 @@
 package com.martin.lolli;
 
 import android.app.Activity;
-
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;

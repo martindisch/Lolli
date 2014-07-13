@@ -25,38 +25,37 @@
         android:src="@drawable/ic_action_add" />
 
     <RelativeLayout
+        android:id="@+id/snackbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
         android:background="#323232"
+        android:clickable="true"
+        android:paddingBottom="18dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingBottom="18dp"
         android:paddingTop="18dp"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/snackbar"
-        android:clickable="true"
         android:visibility="invisible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Long press to remove an item"
-            android:textSize="14sp"
-            android:textColor="?android:textColorPrimaryInverse"/>
+            android:textColor="?android:textColorPrimaryInverse"
+            android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/snackbar_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Got it"
-            android:textSize="14sp"
-            android:textAppearance="@android:style/TextAppearance.Material.Medium"
             android:layout_alignParentRight="true"
+            android:text="Got it"
             android:textAllCaps="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
             android:textColor="?android:colorPrimaryDark"
-            android:id="@+id/snackbar_button"/>
+            android:textSize="14sp" />
 
     </RelativeLayout>
-
 
 
 </RelativeLayout>

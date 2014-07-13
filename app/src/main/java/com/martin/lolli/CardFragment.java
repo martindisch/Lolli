@@ -1,10 +1,9 @@
 package com.martin.lolli;
 
 
-
+import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,12 +13,13 @@ import android.view.ViewGroup;
 
 public class CardFragment extends Fragment {
 
+    public CardFragment() {
+        // Required empty public constructor
+    }
+
     public static CardFragment newInstance() {
         CardFragment fragment = new CardFragment();
         return fragment;
-    }
-    public CardFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -49,8 +49,7 @@ public class CardFragment extends Fragment {
                 SharedPreferences.Editor editor = sp.edit();
                 if (sp.getInt("Theme", R.style.Orange) == R.style.Orange) {
                     editor.putInt("Theme", R.style.Green);
-                }
-                else {
+                } else {
                     editor.putInt("Theme", R.style.Orange);
                 }
                 editor.commit();

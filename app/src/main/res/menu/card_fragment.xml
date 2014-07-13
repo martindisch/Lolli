@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/theme"
-        android:title="Switch theme"
-        android:showAsAction="never"/>
+        android:showAsAction="never"
+        android:title="Switch theme" />
 
 </menu>

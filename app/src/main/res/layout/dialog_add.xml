@@ -7,17 +7,17 @@
     android:padding="@dimen/activity_vertical_margin">
 
     <EditText
+        android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etName"
         android:capitalize="words"
-        android:hint="Text"/>
+        android:hint="Text" />
 
     <EditText
+        android:id="@+id/etPosition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etPosition"
         android:hint="Position"
-        android:inputType="numberSigned"/>
+        android:inputType="numberSigned" />
 
 </LinearLayout>

@@ -4,7 +4,6 @@ package com.martin.lolli;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.app.ActivityOptions;
 import android.app.Fragment;
@@ -20,8 +19,6 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -53,7 +50,7 @@ public class WidgetFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), DetailActivity.class);
-                ActivityOptions options =  ActivityOptions.makeSceneTransitionAnimation(getActivity(), mHero, "photo");
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), mHero, "photo");
                 startActivity(i, options.toBundle());
             }
         });
@@ -75,7 +72,7 @@ public class WidgetFragment extends Fragment {
                 Path p = new Path();
                 p.moveTo(mHero.getX(), mHero.getY());
                 p.rLineTo(-200, -400);
-                animator  = ObjectAnimator.ofFloat(mHero, View.X, View.Y, p);
+                animator = ObjectAnimator.ofFloat(mHero, View.X, View.Y, p);
                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
                 animator.start();
             }
