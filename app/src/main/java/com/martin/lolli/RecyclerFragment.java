@@ -1,28 +1,31 @@
 package com.martin.lolli;
 
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.Outline;
-import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.Shape;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class RecyclerFragment extends Fragment {
@@ -31,6 +34,8 @@ public class RecyclerFragment extends Fragment {
     private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ImageButton mFab;
+    private RelativeLayout mRoot, mSnackbar;
+    private TextView mSnackButton;
 
     public RecyclerFragment() {
         // Required empty public constructor
@@ -72,7 +77,7 @@ public class RecyclerFragment extends Fragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater inflater = getActivity().getLayoutInflater();
+                /*LayoutInflater inflater = getActivity().getLayoutInflater();
                 View dialog = inflater.inflate(R.layout.dialog_add, null);
                 final EditText name = (EditText) dialog.findViewById(R.id.etName);
                 final EditText position = (EditText) dialog.findViewById(R.id.etPosition);
@@ -88,9 +93,51 @@ public class RecyclerFragment extends Fragment {
                     }
 
                 });
-                builder.show();
+                builder.show();*/
+                showSnackbar();
             }
         });
+        mSnackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideSnackbar();
+            }
+        });
+
+        // Initialize Snackbar
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics());
+        mSnackbar.setY(mSnackbar.getY() + px);
+        mSnackbar.setVisibility(mSnackbar.VISIBLE);
+    }
+
+    private void showSnackbar() {
+        float px = - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics());
+        moveSnackbar(px);
+    }
+
+    private void hideSnackbar() {
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics());
+        moveSnackbar(px);
+    }
+
+    private void moveSnackbar(float px) {
+        Path p = new Path();
+
+        ObjectAnimator sbAnimator;
+        p.moveTo(mFab.getX(), mFab.getY());
+        p.rLineTo(0, px);
+        sbAnimator  = ObjectAnimator.ofFloat(mFab, View.X, View.Y, p);
+
+        ObjectAnimator fabAnimator;
+        p.reset();
+        p.moveTo(mSnackbar.getX(), mSnackbar.getY());
+        p.rLineTo(0, px);
+        fabAnimator  = ObjectAnimator.ofFloat(mSnackbar, View.X, View.Y, p);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(fabAnimator, sbAnimator);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.start();
     }
 
     @Override
@@ -99,6 +146,9 @@ public class RecyclerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_recycler, container, false);
         mList = (RecyclerView) v.findViewById(R.id.rvList);
         mFab = (ImageButton) v.findViewById(R.id.fab);
+        mRoot = (RelativeLayout) v.findViewById(R.id.frRoot);
+        mSnackButton = (TextView) v.findViewById(R.id.snackbar_button);
+        mSnackbar = (RelativeLayout) v.findViewById(R.id.snackbar);
         return v;
     }
 

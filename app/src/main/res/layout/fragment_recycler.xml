@@ -1,26 +1,62 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.martin.lolli.RecyclerFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvList"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
     <ImageButton
         android:id="@+id/fab"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/fab_ripple"
         android:elevation="@dimen/button_elevation"
-        android:src="@drawable/ic_action_add"/>
+        android:src="@drawable/ic_action_add" />
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#323232"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="18dp"
+        android:paddingTop="18dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/snackbar"
+        android:clickable="true"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Single Line Snackbar"
+            android:textSize="14sp"
+            android:textColor="?android:textColorPrimaryInverse"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Action"
+            android:textSize="14sp"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:layout_alignParentRight="true"
+            android:textAllCaps="true"
+            android:textColor="?android:colorPrimaryDark"
+            android:id="@+id/snackbar_button"/>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

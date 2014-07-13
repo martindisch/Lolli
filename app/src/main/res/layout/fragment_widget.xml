@@ -55,6 +55,14 @@
         android:layout_toRightOf="@id/bGo"
         android:text="Hide/Reveal" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/bGo"
+        android:layout_toRightOf="@id/bReveal"
+        android:text="Move"
+        android:id="@+id/bMove"/>
+
 
     <ImageView
         android:id="@+id/ivHero"
@@ -65,6 +73,5 @@
         android:layout_marginTop="50dp"
         android:src="@drawable/pic"
         android:viewName="photo"/>
-
 
 </RelativeLayout>

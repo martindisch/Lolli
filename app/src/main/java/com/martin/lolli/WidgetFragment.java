@@ -3,11 +3,14 @@ package com.martin.lolli;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.app.ActivityOptions;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -23,7 +29,7 @@ import android.widget.RelativeLayout;
 
 public class WidgetFragment extends Fragment {
 
-    private Button mButton, mVisibility;
+    private Button mButton, mVisibility, mMove;
     private boolean mVisible = false;
     private RadioGroup mGroup;
     private ImageView mHero;
@@ -62,6 +68,18 @@ public class WidgetFragment extends Fragment {
                 }
             }
         });
+        mMove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ObjectAnimator animator;
+                Path p = new Path();
+                p.moveTo(mHero.getX(), mHero.getY());
+                p.rLineTo(-200, -400);
+                animator  = ObjectAnimator.ofFloat(mHero, View.X, View.Y, p);
+                animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                animator.start();
+            }
+        });
     }
 
     @Override
@@ -73,6 +91,7 @@ public class WidgetFragment extends Fragment {
         mGroup = (RadioGroup) rootView.findViewById(R.id.rgRadios);
         mHero = (ImageView) rootView.findViewById(R.id.ivHero);
         mViews = (RelativeLayout) rootView.findViewById(R.id.rlViews);
+        mMove = (Button) rootView.findViewById(R.id.bMove);
         return rootView;
     }
 
