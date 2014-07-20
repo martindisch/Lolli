@@ -32,7 +32,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onClick(View view) {
                 View dialog = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dialog_rename, null);
                 final EditText name = (EditText) dialog.findViewById(R.id.etName);
-                final int position = (Integer) view.findViewById(R.id.tvName).getTag();
+                final int position = mNames.indexOf(((TextView) view.findViewById(R.id.tvName)).getText().toString());
                 name.setText(mNames.get(position));
                 AlertDialog.Builder builder = new AlertDialog.Builder(viewGroup.getContext());
                 builder.setTitle("Rename");
@@ -52,20 +52,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         v.setOnLongClickListener(new RecyclerView.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                final int position = (Integer) view.findViewById(R.id.tvName).getTag();
+                int position = mNames.indexOf(((TextView) view.findViewById(R.id.tvName)).getText().toString());
                 remove(position);
                 return true;
             }
         });
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, int i) {
         viewHolder.mName.setText(mNames.get(i));
         viewHolder.mIcon.setText(mIcons[i]);
-        viewHolder.mName.setTag(i);
     }
 
     @Override
