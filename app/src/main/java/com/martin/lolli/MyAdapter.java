@@ -4,11 +4,17 @@ package com.martin.lolli;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.martin.common.PositionList;
+import com.martin.common.Unicator;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,11 +23,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private ArrayList<String> mNames;
     private String[] mIcons;
+    private PositionList mPos;
 
     public MyAdapter(String[] names) {
         mNames = new ArrayList<String>();
         Collections.addAll(mNames, names);
         createIcons();
+        mPos = new PositionList(mNames.size());
     }
 
     @Override
@@ -32,7 +40,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onClick(View view) {
                 View dialog = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.dialog_rename, null);
                 final EditText name = (EditText) dialog.findViewById(R.id.etName);
-                final int position = mNames.indexOf(((TextView) view.findViewById(R.id.tvName)).getText().toString());
+                // Get position by the saved id
+                final int position = mPos.getPosition((Integer) view.findViewById(R.id.tvName).getTag());
                 name.setText(mNames.get(position));
                 AlertDialog.Builder builder = new AlertDialog.Builder(viewGroup.getContext());
                 builder.setTitle("Rename");
@@ -47,13 +56,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
                 });
                 builder.show();
+                Log.d("FFF", ((TextView) view.findViewById(R.id.tvName)).getText() + " " + view.findViewById(R.id.tvName).getTag() + " " + mNames.get(position));
             }
         });
         v.setOnLongClickListener(new RecyclerView.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                int position = mNames.indexOf(((TextView) view.findViewById(R.id.tvName)).getText().toString());
-                remove(position);
+                // Get position by the saved id
+                Log.d("FFF", ((TextView) view.findViewById(R.id.tvName)).getText() + " " + view.findViewById(R.id.tvName).getTag());
+                int position = mPos.getPosition((Integer) view.findViewById(R.id.tvName).getTag());
+                remove(position, (Integer) view.findViewById(R.id.tvName).getTag());
                 return true;
             }
         });
@@ -64,6 +76,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, int i) {
         viewHolder.mName.setText(mNames.get(i));
         viewHolder.mIcon.setText(mIcons[i]);
+        // Get unique id and save it
+        viewHolder.mName.setTag(mPos.addItem(i));
     }
 
     @Override
@@ -77,8 +91,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         notifyItemInserted(position);
     }
 
-    public void remove(int position) {
+    public void remove(int position, int key) {
         mNames.remove(position);
+        mPos.removeItem(key);
         createIcons();
         notifyItemRemoved(position);
     }
