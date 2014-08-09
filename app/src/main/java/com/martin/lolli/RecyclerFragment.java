@@ -28,7 +28,7 @@ import android.widget.TextView;
 
 public class RecyclerFragment extends Fragment {
 
-    private RecyclerView mList;
+    public RecyclerView mList;
     private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ImageButton mFab;
@@ -56,7 +56,7 @@ public class RecyclerFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mList.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MyAdapter(getResources().getStringArray(R.array.names));
+        mAdapter = new MyAdapter(getResources().getStringArray(R.array.names), this);
         mList.setAdapter(mAdapter);
 
         int size = getResources().getDimensionPixelSize(R.dimen.fab_size);

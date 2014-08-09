@@ -1,9 +1,12 @@
 package com.martin.lolli;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +20,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private ArrayList<String> mNames;
     private String[] mIcons;
+    private Fragment parent;
 
-    public MyAdapter(String[] names) {
+    public MyAdapter(String[] names, Fragment parent) {
+        this.parent = parent;
         mNames = new ArrayList<String>();
         Collections.addAll(mNames, names);
         createIcons();
@@ -52,7 +57,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         v.setOnLongClickListener(new RecyclerView.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                int position = mNames.indexOf(((TextView) view.findViewById(R.id.tvName)).getText().toString());
+                int position = ((RecyclerFragment) parent).mList.getChildPosition(view) ;
                 remove(position);
                 return true;
             }
