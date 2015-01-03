@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:src="@drawable/pic"
-        android:viewName="photo" />
+        android:transitionName="photo" />
 
     <TextView
         android:id="@+id/yes"

@@ -125,8 +125,7 @@ public class WidgetFragment extends Fragment {
         int initialRadius = mViews.getWidth();
 
         // create the animation (the final radius is zero)
-        ValueAnimator anim =
-                ViewAnimationUtils.createCircularReveal(mViews, cx, cy, initialRadius, 0);
+        Animator anim = ViewAnimationUtils.createCircularReveal(mViews, cx, cy, initialRadius, 0);
 
         // make the view invisible when the animation is done
         anim.addListener(new AnimatorListenerAdapter() {
@@ -152,8 +151,7 @@ public class WidgetFragment extends Fragment {
 
         // create and start the animator for this view
         // (the start radius is zero)
-        ValueAnimator anim =
-                ViewAnimationUtils.createCircularReveal(mViews, cx, cy, 0, finalRadius);
+        Animator anim = ViewAnimationUtils.createCircularReveal(mViews, cx, cy, 0, finalRadius);
 
         // make the view visible when the animation starts
         anim.addListener(new AnimatorListenerAdapter() {

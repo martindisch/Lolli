@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -59,10 +60,15 @@ public class RecyclerFragment extends Fragment {
         mAdapter = new MyAdapter(getResources().getStringArray(R.array.names), this);
         mList.setAdapter(mAdapter);
 
-        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
-        Outline outline = new Outline();
-        outline.setOval(0, 0, size, size);
-        mFab.setOutline(outline);
+        ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                // Or read size directly from the view's width/height
+                int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+                outline.setOval(0, 0, size, size);
+            }
+        };
+        mFab.setOutlineProvider(viewOutlineProvider);
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
