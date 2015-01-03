@@ -45,7 +45,7 @@ public class EncryptionFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.theme:
-                SharedPreferences sp = getActivity().getPreferences(getActivity().MODE_PRIVATE);
+                SharedPreferences sp = getActivity().getSharedPreferences("Lolli", getActivity().MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
                 if (sp.getInt("Theme", R.style.Orange) == R.style.Orange) {
                     editor.putInt("Theme", R.style.Green);
