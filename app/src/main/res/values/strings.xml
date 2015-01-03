@@ -5,6 +5,7 @@
     <string name="title_section1">Widgets</string>
     <string name="title_section2">Cards</string>
     <string name="title_section3">RecyclerView</string>
+    <string name="title_section4">Encryption</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
