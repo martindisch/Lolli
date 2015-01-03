@@ -4,6 +4,7 @@ package com.martin.lolli;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,6 +72,15 @@ public class EncryptionFragment extends Fragment {
                 fsalt();
             }
         });
+
+        Log.d("FFF", "OnCreateView");
+        if (savedInstanceState != null) {
+            Log.d("FFF", "Loading...");
+            mText.setText(savedInstanceState.getString("text"));
+            mPassword.setText(savedInstanceState.getString("password"));
+            mSalt.setText(savedInstanceState.getString("salt"));
+            mOutput.setText(savedInstanceState.getString("output"));
+        }
         return layout;
     }
 
@@ -112,8 +122,19 @@ public class EncryptionFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("text", mText.getText().toString());
+        outState.putString("password", mPassword.getText().toString());
+        outState.putString("salt", mSalt.getText().toString());
+        outState.putString("output", mOutput.getText().toString());
+        Log.d("FFF", "Doin' it");
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((MyActivity) getActivity()).updateTitle(4);
         setHasOptionsMenu(true);
     }
 

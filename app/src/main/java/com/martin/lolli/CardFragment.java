@@ -32,6 +32,7 @@ public class CardFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((MyActivity) getActivity()).updateTitle(2);
         setHasOptionsMenu(true);
     }
 

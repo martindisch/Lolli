@@ -45,6 +45,7 @@ public class WidgetFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((MyActivity) getActivity()).updateTitle(1);
         setHasOptionsMenu(true);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override

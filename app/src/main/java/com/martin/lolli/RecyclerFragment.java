@@ -53,6 +53,7 @@ public class RecyclerFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((MyActivity) getActivity()).updateTitle(3);
         setHasOptionsMenu(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mList.setLayoutManager(mLayoutManager);

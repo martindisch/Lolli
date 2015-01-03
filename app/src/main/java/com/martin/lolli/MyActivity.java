@@ -39,28 +39,27 @@ public class MyActivity extends Activity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position, boolean fromSavedInstanceState) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-//                .commit();
-        switch (position) {
-            case 0:
-                fragmentManager.beginTransaction().replace(R.id.container, WidgetFragment.newInstance()).commit();
-                break;
-            case 1:
-                fragmentManager.beginTransaction().replace(R.id.container, CardFragment.newInstance()).commit();
-                break;
-            case 2:
-                fragmentManager.beginTransaction().replace(R.id.container, RecyclerFragment.newInstance()).commit();
-                break;
-            case 3:
-                fragmentManager.beginTransaction().replace(R.id.container, EncryptionFragment.newInstance()).commit();
+        if (!fromSavedInstanceState) {
+            switch (position) {
+                case 0:
+                    fragmentManager.beginTransaction().replace(R.id.container, WidgetFragment.newInstance()).commit();
+                    break;
+                case 1:
+                    fragmentManager.beginTransaction().replace(R.id.container, CardFragment.newInstance()).commit();
+                    break;
+                case 2:
+                    fragmentManager.beginTransaction().replace(R.id.container, RecyclerFragment.newInstance()).commit();
+                    break;
+                case 3:
+                    fragmentManager.beginTransaction().replace(R.id.container, EncryptionFragment.newInstance()).commit();
+            }
         }
     }
 
-    public void onSectionAttached(int number) {
+    public void updateTitle(int number) {
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -74,6 +73,7 @@ public class MyActivity extends Activity
             case 4:
                 mTitle = getString(R.string.title_section4);
         }
+        setTitle(mTitle);
     }
 
 }
