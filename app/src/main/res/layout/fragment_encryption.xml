@@ -9,44 +9,55 @@
         android:padding="@dimen/activity_horizontal_margin">
 
         <TextView
+            android:id="@+id/tvText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text"
-            android:id="@+id/tvText"/>
+            android:text="@string/text" />
+
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:lines="4"
-            android:layout_below="@id/tvText"
             android:id="@+id/etText"
-            android:maxLines="4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvText"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:gravity="top"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="4"
+            android:maxLines="4" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/tvPassword"
-            android:layout_below="@id/etText"
-            android:text="@string/password"/>
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etPassword"
-            android:layout_below="@id/tvPassword"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvSalt"
-            android:layout_below="@id/etPassword"
-            android:text="@string/salt"/>
+            android:layout_below="@id/etText"
+            android:text="@string/password" />
+
         <EditText
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tvPassword"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:maxLines="1"
+            android:inputType="textCapWords"
+            android:imeOptions="actionNext"/>
+
+        <TextView
+            android:id="@+id/tvSalt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etPassword"
+            android:text="@string/salt" />
+
+        <EditText
             android:id="@+id/etSalt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/tvSalt"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
 
     </RelativeLayout>
 
