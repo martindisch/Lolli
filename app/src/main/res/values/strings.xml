@@ -19,6 +19,10 @@
     <string name="text">Text</string>
     <string name="password">Password</string>
     <string name="salt">Salt</string>
+    <string name="encrypt">Encrypt</string>
+    <string name="decrypt">Decrypt</string>
+    <string name="generate_salt">New Salt</string>
+    <string name="output">Output</string>
 
     <string-array name="names">
         <item>Yadomi</item>

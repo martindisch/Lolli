@@ -38,9 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPassword"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:maxLines="1"
+            android:imeOptions="actionNext"
             android:inputType="textCapWords"
-            android:imeOptions="actionNext"/>
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/tvSalt"
@@ -55,9 +55,59 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSalt"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
-            android:maxLines="1"
+            android:imeOptions="actionDone"
             android:inputType="text"
-            android:imeOptions="actionDone"/>
+            android:maxLines="1" />
+
+        <LinearLayout
+            android:id="@+id/llButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etSalt"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/bEncrypt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/encrypt" />
+
+            <Button
+                android:id="@+id/bDecrypt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/decrypt" />
+
+            <Button
+                android:id="@+id/bSalt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/generate_salt" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvOutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/llButtons"
+            android:text="@string/output" />
+
+        <EditText
+            android:id="@+id/etOutput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvOutput"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:gravity="top"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="8"
+            android:maxLines="8" />
 
     </RelativeLayout>
 
