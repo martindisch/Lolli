@@ -24,6 +24,11 @@
 
 package com.tozny.crypto.android;
 
+import android.os.Build;
+import android.os.Process;
+import android.util.Base64;
+import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -53,11 +58,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import android.os.Build;
-import android.os.Process;
-import android.util.Base64;
-import android.util.Log;
-
 import static java.util.Arrays.copyOfRange;
 
 /**
@@ -70,9 +70,9 @@ public class AesCbcWithIntegrity {
     private static final String CIPHER = "AES";
     private static final String RANDOM_ALGORITHM = "SHA1PRNG";
     private static final int AES_KEY_LENGTH_BITS = 128;
+    private static final int PBE_SALT_LENGTH_BITS = AES_KEY_LENGTH_BITS; // same size as key output
     private static final int IV_LENGTH_BYTES = 16;
     private static final int PBE_ITERATION_COUNT = 10000;
-    private static final int PBE_SALT_LENGTH_BITS = AES_KEY_LENGTH_BITS; // same size as key output
     private static final String PBE_ALGORITHM = "PBKDF2WithHmacSHA1";
     private static final int BASE64_FLAGS = Base64.DEFAULT | Base64.NO_WRAP;
     private static final AtomicBoolean prngFixed = new AtomicBoolean(false);
@@ -105,11 +105,11 @@ public class AesCbcWithIntegrity {
 
         } else {
             byte[] confidentialityKey = Base64.decode(keysArr[0], BASE64_FLAGS);
-            if (confidentialityKey.length != AES_KEY_LENGTH_BITS /8) {
+            if (confidentialityKey.length != AES_KEY_LENGTH_BITS / 8) {
                 throw new InvalidKeyException("Base64 decoded key is not " + AES_KEY_LENGTH_BITS + " bytes");
             }
             byte[] integrityKey = Base64.decode(keysArr[1], BASE64_FLAGS);
-            if (integrityKey.length != HMAC_KEY_LENGTH_BITS /8) {
+            if (integrityKey.length != HMAC_KEY_LENGTH_BITS / 8) {
                 throw new InvalidKeyException("Base64 decoded key is not " + HMAC_KEY_LENGTH_BITS + " bytes");
             }
 
@@ -163,8 +163,8 @@ public class AesCbcWithIntegrity {
         byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
 
         // Split the random bytes into two parts:
-        byte[] confidentialityKeyBytes = copyOfRange(keyBytes, 0, AES_KEY_LENGTH_BITS /8);
-        byte[] integrityKeyBytes = copyOfRange(keyBytes, AES_KEY_LENGTH_BITS /8, AES_KEY_LENGTH_BITS /8 + HMAC_KEY_LENGTH_BITS /8);
+        byte[] confidentialityKeyBytes = copyOfRange(keyBytes, 0, AES_KEY_LENGTH_BITS / 8);
+        byte[] integrityKeyBytes = copyOfRange(keyBytes, AES_KEY_LENGTH_BITS / 8, AES_KEY_LENGTH_BITS / 8 + HMAC_KEY_LENGTH_BITS / 8);
 
         //Generate the AES key
         SecretKey confidentialityKey = new SecretKeySpec(confidentialityKeyBytes, CIPHER);
@@ -177,8 +177,9 @@ public class AesCbcWithIntegrity {
 
     /**
      * A function that generates password-based AES & HMAC keys. See generateKeyFromPassword.
+     *
      * @param password The password to derive the AES/HMAC keys from
-     * @param salt A string version of the salt; base64 encoded.
+     * @param salt     A string version of the salt; base64 encoded.
      * @return The AES & HMAC keys.
      * @throws GeneralSecurityException
      */
@@ -188,6 +189,7 @@ public class AesCbcWithIntegrity {
 
     /**
      * Generates a random salt.
+     *
      * @return The random salt suitable for generateKeyFromPassword.
      */
     public static byte[] generateSalt() throws GeneralSecurityException {
@@ -234,11 +236,11 @@ public class AesCbcWithIntegrity {
      * Generates a random IV and encrypts this plain text with the given key. Then attaches
      * a hashed MAC, which is contained in the CipherTextIvMac class.
      *
-     * @param plaintext The text that will be encrypted, which
-     *                  will be serialized with UTF-8
+     * @param plaintext  The text that will be encrypted, which
+     *                   will be serialized with UTF-8
      * @param secretKeys The AES & HMAC keys with which to encrypt
      * @return a tuple of the IV, ciphertext, mac
-     * @throws GeneralSecurityException if AES is not implemented on this system
+     * @throws GeneralSecurityException     if AES is not implemented on this system
      * @throws UnsupportedEncodingException if UTF-8 is not supported in this system
      */
     public static CipherTextIvMac encrypt(String plaintext, SecretKeys secretKeys)
@@ -250,10 +252,10 @@ public class AesCbcWithIntegrity {
      * Generates a random IV and encrypts this plain text with the given key. Then attaches
      * a hashed MAC, which is contained in the CipherTextIvMac class.
      *
-     * @param plaintext The bytes that will be encrypted
+     * @param plaintext  The bytes that will be encrypted
      * @param secretKeys The AES & HMAC keys with which to encrypt
      * @return a tuple of the IV, ciphertext, mac
-     * @throws GeneralSecurityException if AES is not implemented on this system
+     * @throws GeneralSecurityException     if AES is not implemented on this system
      * @throws UnsupportedEncodingException if the specified encoding is invalid
      */
     public static CipherTextIvMac encrypt(String plaintext, SecretKeys secretKeys, String encoding)
@@ -265,7 +267,7 @@ public class AesCbcWithIntegrity {
      * Generates a random IV and encrypts this plain text with the given key. Then attaches
      * a hashed MAC, which is contained in the CipherTextIvMac class.
      *
-     * @param plaintext The text that will be encrypted
+     * @param plaintext  The text that will be encrypted
      * @param secretKeys The combined AES & HMAC keys with which to encrypt
      * @return a tuple of the IV, ciphertext, mac
      * @throws GeneralSecurityException if AES is not implemented on this system
@@ -312,11 +314,11 @@ public class AesCbcWithIntegrity {
     /**
      * AES CBC decrypt.
      *
-     * @param civ The cipher text, IV, and mac
+     * @param civ        The cipher text, IV, and mac
      * @param secretKeys The AES & HMAC keys
-     * @param encoding The string encoding to use to decode the bytes after decryption
+     * @param encoding   The string encoding to use to decode the bytes after decryption
      * @return A string derived from the decrypted bytes (not base64 encoded)
-     * @throws GeneralSecurityException if AES is not implemented on this system
+     * @throws GeneralSecurityException     if AES is not implemented on this system
      * @throws UnsupportedEncodingException if the encoding is unsupported
      */
     public static String decryptString(CipherTextIvMac civ, SecretKeys secretKeys, String encoding)
@@ -327,11 +329,11 @@ public class AesCbcWithIntegrity {
     /**
      * AES CBC decrypt.
      *
-     * @param civ The cipher text, IV, and mac
+     * @param civ        The cipher text, IV, and mac
      * @param secretKeys The AES & HMAC keys
      * @return A string derived from the decrypted bytes, which are interpreted
-     *         as a UTF-8 String
-     * @throws GeneralSecurityException if AES is not implemented on this system
+     * as a UTF-8 String
+     * @throws GeneralSecurityException     if AES is not implemented on this system
      * @throws UnsupportedEncodingException if UTF-8 is not supported
      */
     public static String decryptString(CipherTextIvMac civ, SecretKeys secretKeys)
@@ -342,7 +344,7 @@ public class AesCbcWithIntegrity {
     /**
      * AES CBC decrypt.
      *
-     * @param civ the cipher text, iv, and mac
+     * @param civ        the cipher text, iv, and mac
      * @param secretKeys the AES & HMAC keys
      * @return The raw decrypted bytes
      * @throws GeneralSecurityException if MACs don't match or AES is not implemented
@@ -370,7 +372,8 @@ public class AesCbcWithIntegrity {
 
     /**
      * Generate the mac based on HMAC_ALGORITHM
-     * @param integrityKey The key used for hmac
+     *
+     * @param integrityKey   The key used for hmac
      * @param byteCipherText the cipher text
      * @return A byte array of the HMAC for the given key & ciphertext
      * @throws NoSuchAlgorithmException
@@ -382,6 +385,25 @@ public class AesCbcWithIntegrity {
         sha256_HMAC.init(integrityKey);
         return sha256_HMAC.doFinal(byteCipherText);
     }
+
+    /**
+     * Simple constant-time equality of two byte arrays. Used for security to avoid timing attacks.
+     *
+     * @param a
+     * @param b
+     * @return true iff the arrays are exactly equal.
+     */
+    public static boolean constantTimeEq(byte[] a, byte[] b) {
+        if (a.length != b.length) {
+            return false;
+        }
+        int result = 0;
+        for (int i = 0; i < a.length; i++) {
+            result |= a[i] ^ b[i];
+        }
+        return result == 0;
+    }
+
     /**
      * Holder class that has both the secret AES key for encryption (confidentiality)
      * and the secret HMAC key for integrity.
@@ -393,8 +415,9 @@ public class AesCbcWithIntegrity {
 
         /**
          * Construct the secret keys container.
+         *
          * @param confidentialityKeyIn The AES key
-         * @param integrityKeyIn the HMAC key
+         * @param integrityKeyIn       the HMAC key
          */
         public SecretKeys(SecretKey confidentialityKeyIn, SecretKey integrityKeyIn) {
             setConfidentialityKey(confidentialityKeyIn);
@@ -419,10 +442,11 @@ public class AesCbcWithIntegrity {
 
         /**
          * Encodes the two keys as a string
+         *
          * @return base64(confidentialityKey):base64(integrityKey)
          */
         @Override
-        public String toString () {
+        public String toString() {
             return Base64.encodeToString(getConfidentialityKey().getEncoded(), BASE64_FLAGS)
                     + ":" + Base64.encodeToString(getIntegrityKey().getEncoded(), BASE64_FLAGS);
         }
@@ -453,24 +477,6 @@ public class AesCbcWithIntegrity {
         }
     }
 
-
-    /**
-     * Simple constant-time equality of two byte arrays. Used for security to avoid timing attacks.
-     * @param a
-     * @param b
-     * @return true iff the arrays are exactly equal.
-     */
-    public static boolean constantTimeEq(byte[] a, byte[] b) {
-        if (a.length != b.length) {
-            return false;
-        }
-        int result = 0;
-        for (int i = 0; i < a.length; i++) {
-            result |= a[i] ^ b[i];
-        }
-        return result == 0;
-    }
-
     /**
      * Holder class that allows us to bundle ciphertext and IV together.
      */
@@ -479,20 +485,9 @@ public class AesCbcWithIntegrity {
         private final byte[] iv;
         private final byte[] mac;
 
-        public byte[] getCipherText() {
-            return cipherText;
-        }
-
-        public byte[] getIv() {
-            return iv;
-        }
-
-        public byte[] getMac() {
-            return mac;
-        }
-
         /**
          * Construct a new bundle of ciphertext and IV.
+         *
          * @param c The ciphertext
          * @param i The IV
          * @param h The mac
@@ -508,8 +503,8 @@ public class AesCbcWithIntegrity {
          * format <code>base64(iv):base64(ciphertext)</code>.
          *
          * @param base64IvAndCiphertext A string of the format
-         *            <code>iv:ciphertext</code> The IV and ciphertext must each
-         *            be base64-encoded.
+         *                              <code>iv:ciphertext</code> The IV and ciphertext must each
+         *                              be base64-encoded.
          */
         public CipherTextIvMac(String base64IvAndCiphertext) {
             String[] civArray = base64IvAndCiphertext.split(":");
@@ -525,7 +520,8 @@ public class AesCbcWithIntegrity {
         /**
          * Concatinate the IV to the cipherText using array copy.
          * This is used e.g. before computing mac.
-         * @param iv The IV to prepend
+         *
+         * @param iv         The IV to prepend
          * @param cipherText the cipherText to append
          * @return iv:cipherText, a new byte array.
          */
@@ -534,6 +530,18 @@ public class AesCbcWithIntegrity {
             System.arraycopy(iv, 0, combined, 0, iv.length);
             System.arraycopy(cipherText, 0, combined, iv.length, cipherText.length);
             return combined;
+        }
+
+        public byte[] getCipherText() {
+            return cipherText;
+        }
+
+        public byte[] getIv() {
+            return iv;
+        }
+
+        public byte[] getMac() {
+            return mac;
         }
 
         /**
@@ -582,17 +590,17 @@ public class AesCbcWithIntegrity {
     /**
      * Fixes for the RNG as per
      * http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
-     *
+     * <p/>
      * This software is provided 'as-is', without any express or implied
      * warranty. In no event will Google be held liable for any damages arising
      * from the use of this software.
-     *
+     * <p/>
      * Permission is granted to anyone to use this software for any purpose,
      * including commercial applications, and to alter it and redistribute it
      * freely, as long as the origin is not misrepresented.
-     *
+     * <p/>
      * Fixes for the output of the default PRNG having low entropy.
-     *
+     * <p/>
      * The fixes need to be applied via {@link #apply()} before any use of Java
      * Cryptography Architecture primitives. A good place to invoke them is in
      * the application's {@code onCreate}.
@@ -603,7 +611,9 @@ public class AesCbcWithIntegrity {
         private static final int VERSION_CODE_JELLY_BEAN_MR2 = 18;
         private static final byte[] BUILD_FINGERPRINT_AND_DEVICE_SERIAL = getBuildFingerprintAndDeviceSerial();
 
-        /** Hidden constructor to prevent instantiation. */
+        /**
+         * Hidden constructor to prevent instantiation.
+         */
         private PrngFixes() {
         }
 
@@ -611,7 +621,7 @@ public class AesCbcWithIntegrity {
          * Applies all fixes.
          *
          * @throws SecurityException if a fix is needed but could not be
-         *             applied.
+         *                           applied.
          */
         public static void apply() {
             applyOpenSSLFix();
@@ -623,7 +633,7 @@ public class AesCbcWithIntegrity {
          * the fix is not needed.
          *
          * @throws SecurityException if the fix is needed but could not be
-         *             applied.
+         *                           applied.
          */
         private static void applyOpenSSLFix() throws SecurityException {
             if ((Build.VERSION.SDK_INT < VERSION_CODE_JELLY_BEAN)
@@ -657,7 +667,7 @@ public class AesCbcWithIntegrity {
          * default or if there is not need to install the implementation.
          *
          * @throws SecurityException if the fix is needed but could not be
-         *             applied.
+         *                           applied.
          */
         private static void installLinuxPRNGSecureRandom() throws SecurityException {
             if (Build.VERSION.SDK_INT > VERSION_CODE_JELLY_BEAN_MR2) {
@@ -671,7 +681,7 @@ public class AesCbcWithIntegrity {
             if ((secureRandomProviders == null)
                     || (secureRandomProviders.length < 1)
                     || (!LinuxPRNGSecureRandomProvider.class.equals(secureRandomProviders[0]
-                            .getClass()))) {
+                    .getClass()))) {
                 Security.insertProviderAt(new LinuxPRNGSecureRandomProvider(), 1);
             }
 
@@ -694,6 +704,58 @@ public class AesCbcWithIntegrity {
                 throw new SecurityException(
                         "SecureRandom.getInstance(\"SHA1PRNG\") backed by wrong" + " Provider: "
                                 + rng2.getProvider().getClass());
+            }
+        }
+
+        /**
+         * Generates a device- and invocation-specific seed to be mixed into the
+         * Linux PRNG.
+         */
+        private static byte[] generateSeed() {
+            try {
+                ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
+                DataOutputStream seedBufferOut = new DataOutputStream(seedBuffer);
+                seedBufferOut.writeLong(System.currentTimeMillis());
+                seedBufferOut.writeLong(System.nanoTime());
+                seedBufferOut.writeInt(Process.myPid());
+                seedBufferOut.writeInt(Process.myUid());
+                seedBufferOut.write(BUILD_FINGERPRINT_AND_DEVICE_SERIAL);
+                seedBufferOut.close();
+                return seedBuffer.toByteArray();
+            } catch (IOException e) {
+                throw new SecurityException("Failed to generate seed", e);
+            }
+        }
+
+        /**
+         * Gets the hardware serial number of this device.
+         *
+         * @return serial number or {@code null} if not available.
+         */
+        private static String getDeviceSerialNumber() {
+            // We're using the Reflection API because Build.SERIAL is only
+            // available since API Level 9 (Gingerbread, Android 2.3).
+            try {
+                return (String) Build.class.getField("SERIAL").get(null);
+            } catch (Exception ignored) {
+                return null;
+            }
+        }
+
+        private static byte[] getBuildFingerprintAndDeviceSerial() {
+            StringBuilder result = new StringBuilder();
+            String fingerprint = Build.FINGERPRINT;
+            if (fingerprint != null) {
+                result.append(fingerprint);
+            }
+            String serial = getDeviceSerialNumber();
+            if (serial != null) {
+                result.append(serial);
+            }
+            try {
+                return result.toString().getBytes("UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("UTF-8 encoding not supported");
             }
         }
 
@@ -831,58 +893,6 @@ public class AesCbcWithIntegrity {
                     }
                     return sUrandomOut;
                 }
-            }
-        }
-
-        /**
-         * Generates a device- and invocation-specific seed to be mixed into the
-         * Linux PRNG.
-         */
-        private static byte[] generateSeed() {
-            try {
-                ByteArrayOutputStream seedBuffer = new ByteArrayOutputStream();
-                DataOutputStream seedBufferOut = new DataOutputStream(seedBuffer);
-                seedBufferOut.writeLong(System.currentTimeMillis());
-                seedBufferOut.writeLong(System.nanoTime());
-                seedBufferOut.writeInt(Process.myPid());
-                seedBufferOut.writeInt(Process.myUid());
-                seedBufferOut.write(BUILD_FINGERPRINT_AND_DEVICE_SERIAL);
-                seedBufferOut.close();
-                return seedBuffer.toByteArray();
-            } catch (IOException e) {
-                throw new SecurityException("Failed to generate seed", e);
-            }
-        }
-
-        /**
-         * Gets the hardware serial number of this device.
-         *
-         * @return serial number or {@code null} if not available.
-         */
-        private static String getDeviceSerialNumber() {
-            // We're using the Reflection API because Build.SERIAL is only
-            // available since API Level 9 (Gingerbread, Android 2.3).
-            try {
-                return (String) Build.class.getField("SERIAL").get(null);
-            } catch (Exception ignored) {
-                return null;
-            }
-        }
-
-        private static byte[] getBuildFingerprintAndDeviceSerial() {
-            StringBuilder result = new StringBuilder();
-            String fingerprint = Build.FINGERPRINT;
-            if (fingerprint != null) {
-                result.append(fingerprint);
-            }
-            String serial = getDeviceSerialNumber();
-            if (serial != null) {
-                result.append(serial);
-            }
-            try {
-                return result.toString().getBytes("UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException("UTF-8 encoding not supported");
             }
         }
     }

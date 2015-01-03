@@ -1,12 +1,10 @@
 package com.martin.lolli;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +55,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         v.setOnLongClickListener(new RecyclerView.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                int position = ((RecyclerFragment) parent).mList.getChildPosition(view) ;
+                int position = ((RecyclerFragment) parent).mList.getChildPosition(view);
                 remove(position);
                 return true;
             }

@@ -19,8 +19,6 @@ import com.tozny.crypto.android.AesCbcWithIntegrity;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 
-import javax.crypto.Cipher;
-
 import static com.tozny.crypto.android.AesCbcWithIntegrity.decryptString;
 import static com.tozny.crypto.android.AesCbcWithIntegrity.encrypt;
 import static com.tozny.crypto.android.AesCbcWithIntegrity.generateKeyFromPassword;
@@ -75,7 +73,6 @@ public class EncryptionFragment extends Fragment {
 
         Log.d("FFF", "OnCreateView");
         if (savedInstanceState != null) {
-            Log.d("FFF", "Loading...");
             mText.setText(savedInstanceState.getString("text"));
             mPassword.setText(savedInstanceState.getString("password"));
             mSalt.setText(savedInstanceState.getString("salt"));
@@ -128,7 +125,6 @@ public class EncryptionFragment extends Fragment {
         outState.putString("password", mPassword.getText().toString());
         outState.putString("salt", mSalt.getText().toString());
         outState.putString("output", mOutput.getText().toString());
-        Log.d("FFF", "Doin' it");
     }
 
     @Override

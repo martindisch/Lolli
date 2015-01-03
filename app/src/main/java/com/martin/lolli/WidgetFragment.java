@@ -4,7 +4,6 @@ package com.martin.lolli;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.app.ActivityOptions;
 import android.app.Fragment;
 import android.content.Intent;
