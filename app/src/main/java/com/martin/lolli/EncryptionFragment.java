@@ -13,6 +13,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.tozny.crypto.android.AesCbcWithIntegrity;
+
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+
+import javax.crypto.Cipher;
+
+import static com.tozny.crypto.android.AesCbcWithIntegrity.decryptString;
+import static com.tozny.crypto.android.AesCbcWithIntegrity.encrypt;
+import static com.tozny.crypto.android.AesCbcWithIntegrity.generateKeyFromPassword;
+import static com.tozny.crypto.android.AesCbcWithIntegrity.generateSalt;
+import static com.tozny.crypto.android.AesCbcWithIntegrity.saltString;
+
 public class EncryptionFragment extends Fragment {
 
     private EditText mText, mPassword, mSalt, mOutput;
@@ -43,32 +56,59 @@ public class EncryptionFragment extends Fragment {
         mEncrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                encrypt();
+                fencrypt();
             }
         });
         mDecrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                decrypt();
+                fdecrypt();
             }
         });
         mGenSalt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salt();
+                fsalt();
             }
         });
         return layout;
     }
 
-    private void encrypt() {
-
+    private void fencrypt() {
+        if (!mPassword.getText().toString().contentEquals("") && !mSalt.getText().toString().contentEquals("") && !mText.getText().toString().contentEquals("")) {
+            try {
+                AesCbcWithIntegrity.SecretKeys key = generateKeyFromPassword(mPassword.getText().toString(), mSalt.getText().toString());
+                AesCbcWithIntegrity.CipherTextIvMac civ = encrypt(mText.getText().toString(), key);
+                mOutput.setText(civ.toString());
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
     }
-    private void decrypt() {
 
+    private void fdecrypt() {
+        if (!mPassword.getText().toString().contentEquals("") && !mSalt.getText().toString().contentEquals("") && !mText.getText().toString().contentEquals("")) {
+            try {
+                AesCbcWithIntegrity.SecretKeys key = generateKeyFromPassword(mPassword.getText().toString(), mSalt.getText().toString());
+                String plainText = decryptString(new AesCbcWithIntegrity.CipherTextIvMac(mText.getText().toString()), key);
+                mOutput.setText(plainText);
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
     }
-    private void salt() {
 
+    private void fsalt() {
+        try {
+            String salt = saltString(generateSalt());
+            mSalt.setText(salt);
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
